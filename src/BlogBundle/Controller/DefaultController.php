@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexOld()
     {
         echo "<h2>Entry</h2>";
         $em = $this->getDoctrine()->getManager();
@@ -57,6 +57,11 @@ class DefaultController extends Controller
 
             echo "<hr/>";
         }
+
+        return $this->render('BlogBundle:Default:index.html.twig');
+    }
+
+    public function indexAction(){
 
         return $this->render('BlogBundle:Default:index.html.twig');
     }

@@ -26,7 +26,7 @@ class Tag
     private $entryTag;
 
     public function __construct() {
-        $this->$entryTag = new ArrayCollection();
+        $this->entryTag = new ArrayCollection();
     }
 
 
