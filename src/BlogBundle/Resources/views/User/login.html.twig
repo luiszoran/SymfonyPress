@@ -1,0 +1,28 @@
+{% extends "BlogBundle::layout.html.twig" %}
+
+{% block content %}
+    {% if is_granted('ROLE_USER') %}
+        <strong>You are logged in as normal user</strong>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <strong>You are logged in as admin user</strong>
+    {% endif %}
+    <h2>Login</h2>
+    <hr/>
+    <div class="col-lg-4">
+        <form action="{{ path('login_check') }}" method="post">
+            <label>Email:</label>
+            <input type="email" id="username" name="_username" value="{{ last_username }}" class="form-control"/>
+
+            <label>Contraseña:</label>
+            <input type="password" id="password" name="_password" class="form-control"/>
+
+            <input type="submit" value="Login" class="btn-success"/>
+
+            <input type="hidden" name="_target_path" value="/login"/>
+        </form>
+    </div>
+
+    <div class="clearfix"></div>
+{% endblock %}

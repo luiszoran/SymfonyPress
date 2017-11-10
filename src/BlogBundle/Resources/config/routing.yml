@@ -5,3 +5,9 @@ blog_homepage:
 login:
     path: /login
     defaults: { _controller: BlogBundle:User:login }
+
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
