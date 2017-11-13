@@ -46,7 +46,10 @@
                             {% else %}
                                 <li><a href="{{ path('logout') }}">Leave</a></li>
                                 <li role="separator" class="divider"></li>
+                                <li><a href="{{ path('blog_index_entry') }}">Entries</a></li>
+                                <li><a href="{{ path('blog_index_category') }}">Categories</a></li>
                                 <li><a href="{{ path('blog_index_tag') }}">Tags</a></li>
+                                <li role="separator" class="divider"></li>
                             {% endif %}
                             <li><a href="#">Help</a></li>
                         </ul>

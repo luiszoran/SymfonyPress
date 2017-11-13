@@ -1,0 +1,42 @@
+{% extends "BlogBundle::layout.html.twig" %}
+
+{% block content %}
+
+    <div class="col-lg-6">
+        {% for message in app.session.flashbag().get('message') %}
+            {% for status in app.session.flashbag().get('status') %}
+                {% if status ==  0 %}
+                    <div class="alert alert-success">{{ message }}</div>
+                {% else %}
+                    <div class="alert alert-danger">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        <h2>Entries</h2>
+        <hr/>
+        <a href="{{ path('blog_add_entry') }}" class="btn btn-success">Add Entry</a>
+        <hr/>
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.title }}</td>
+                    <td>{{ entry.content }}</td>
+                    <td>
+                        <a href="{{ path('blog_edit_entry', {"id":entry.id}) }}" class="btn btn-warning">Edit</a>
+                    </td>
+                    <td>
+                        <a href="{{ path('blog_delete_entry', {"id":entry.id}) }}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="clearfix"></div>
+
+{% endblock %}

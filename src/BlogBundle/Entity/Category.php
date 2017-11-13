@@ -91,5 +91,9 @@ class Category
     public function getEntries(){
         return $this->entry;
     }
+
+    public function __toString(){
+        return $this->name;
+    }
 }
 
