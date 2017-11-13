@@ -34,12 +34,12 @@ class Entry
     private $image;
 
     /**
-     * @var \BlogBundle\Entity\Categories
+     * @var \BlogBundle\Entity\Category
      */
     private $category;
 
     /**
-     * @var \BlogBundle\Entity\Users
+     * @var \BlogBundle\Entity\User
      */
     private $user;
 
@@ -158,7 +158,7 @@ class Entry
     /**
      * Set category
      *
-     * @param \BlogBundle\Entity\Categories $category
+     * @param \BlogBundle\Entity\Category $category
      *
      * @return Entry
      */
@@ -172,7 +172,7 @@ class Entry
     /**
      * Get category
      *
-     * @return \BlogBundle\Entity\Categories
+     * @return \BlogBundle\Entity\Category
      */
     public function getCategory()
     {
@@ -182,7 +182,7 @@ class Entry
     /**
      * Set user
      *
-     * @param \BlogBundle\Entity\Users $user
+     * @param \BlogBundle\Entity\User $user
      *
      * @return Entry
      */
@@ -196,7 +196,7 @@ class Entry
     /**
      * Get user
      *
-     * @return \BlogBundle\Entity\Users
+     * @return \BlogBundle\Entity\User
      */
     public function getUser()
     {
@@ -210,6 +210,10 @@ class Entry
 
     public function getEntryTag(){
         return $this->entryTag;
+    }
+
+    public function __toString() {
+        return $this->title;
     }
 }
 

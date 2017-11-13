@@ -33,6 +33,7 @@ class EntryController extends Controller {
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $category_repo = $em->getRepository("BlogBundle:Category");
+                $entry_repo = $em->getRepository("BlogBundle:Entry");
                 $entry = new Entry();
                 $entry->setTitle($form->get("title")->getData());
                 $entry->setContent($form->get("content")->getData());
@@ -40,7 +41,7 @@ class EntryController extends Controller {
 
                 $file = $form->get("image")->getData();
                 $ext = $file->guessExtension();
-                $file_name = time().".".$ext;
+                $file_name = time() . "." . $ext;
                 $file->move("uploads", $file_name);
 
                 $entry->setImage($file_name);
@@ -53,6 +54,13 @@ class EntryController extends Controller {
 
                 $em->persist($entry);
                 $flush = $em->flush();
+
+                $entry_repo->saveEntryTags($form->get("tags")->getData(),
+                    $form->get("title")->getData(),
+                    $form->get("category")->getData(),
+                    $user,
+                    $entry);
+
 
                 if ($flush == null) {
                     $message = "Entry was created successfully";
