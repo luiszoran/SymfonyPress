@@ -27,12 +27,21 @@
                 <tr>
                     <td>{{ entry.title }}</td>
                     <td>{{ entry.content }}</td>
+                    {% if app.user.id is defined and entry.user.id ==  app.user.id %}
                     <td>
                         <a href="{{ path('blog_edit_entry', {"id":entry.id}) }}" class="btn btn-warning">Edit</a>
                     </td>
                     <td>
                         <a href="{{ path('blog_delete_entry', {"id":entry.id}) }}" class="btn btn-danger">Delete</a>
                     </td>
+                    {% else %}
+                        <td>
+                            You are not allowed to edit someone else's entries
+                        </td>
+                        <td>
+                            You are not allowed to delete someone else's entries
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>

@@ -1,5 +1,19 @@
 {% extends "@Blog/layout.html.twig" %}
 
 {% block content %}
-<h1>Hello World!</h1>
+    {% for entry in entries %}
+        <div class="col-lg-12">
+            <p class="pull-left"><img width="100" style="margin-right:20px" src="{{ asset('uploads/'~entry.image) }}"/></p>
+            <p><strong>{{ entry.title }}</strong></p>
+            <p>Category: {{ entry.category.name }}</p>
+            <p>Author: {{ entry.user.name }}</p>
+            <p> Tags:
+                {% for et in entry.entryTag %}
+                    {{ et.tag.name }}
+                {% endfor %}
+            </p>
+            <hr/>
+        </div>
+    {% endfor %}
+    <div class="clearfix"></div>
 {% endblock %}

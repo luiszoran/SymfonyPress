@@ -62,7 +62,12 @@ class DefaultController extends Controller
     }
 
     public function indexAction(){
+        $em = $this->getDoctrine()->getManager();
+        $entry_repo = $em->getRepository("BlogBundle:Entry");
 
-        return $this->render('BlogBundle:Default:index.html.twig');
+        $entries = $entry_repo->findAll();
+
+        return $this->render('BlogBundle:Default:index.html.twig',
+            array("entries"=>$entries));
     }
 }

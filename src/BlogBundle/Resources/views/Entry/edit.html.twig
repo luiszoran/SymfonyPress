@@ -3,8 +3,12 @@
 {% block content %}
 
     <div class="col-lg-6">
-        <h2>Edit Entry</h2>
-        {{ form_start(form) }}
+        <h2>Edit Entry: {{ entry.title }}</h2>
+        {{ form_start(form, {'enctype':'multipart/form-data'}) }}
+            <label>Image</label><img width="100" style="margin:10px" src="{{ asset('uploads/'~entry.image) }}"/>
+                {{ form_widget(form.image) }}
+            <label>Tags</label>
+                {{ form_widget(form.tags, {"value":tags|trim(",")}) }}
         {{ form_end(form) }}
     </div>
     <div class="clearfix"></div>

@@ -87,7 +87,15 @@ class EntryController extends Controller {
     public function deleteAction($id) {
         $em = $this->getDoctrine()->getManager();
         $entry_repo = $em->getRepository("BlogBundle:Entry");
+        $entry_tag_repo = $em->getRepository("BlogBundle:EntryTag");
         $entry = $entry_repo->find($id);
+        $entry_tags = $entry_tag_repo->findBy(array("entry"=>$entry));
+
+        foreach ($entry_tags as $entry_tag){
+            $em->remove($entry_tag);
+            $em->flush();
+        }
+
         $em->remove($entry);
         $em->flush();
 
@@ -99,6 +107,11 @@ class EntryController extends Controller {
         $entry_repo = $em->getRepository("BlogBundle:Entry");
         $entry = $entry_repo->find($id);
 
+        $tags = "";
+        foreach ($entry->getEntryTag() as $entryTag){
+            $tags .= $entryTag->getTag()->getName().",";
+        }
+
         $form = $this->createForm(EntryType::class, $entry);
 
         $form->handleRequest($request);
@@ -109,7 +122,13 @@ class EntryController extends Controller {
                 $entry->setTitle($form->get("title")->getData());
                 $entry->setContent($form->get("content")->getData());
                 $entry->setStatus($form->get("status")->getData());
-                $entry->setImage(null);
+
+                $file = $form->get("image")->getData();
+                $ext = $file->guessExtension();
+                $file_name = time() . "." . $ext;
+                $file->move("uploads", $file_name);
+
+                $entry->setImage($file_name);
 
                 $category = $category_repo->find($form->get("category")->getData());
                 $entry->setCategory($category);
@@ -119,6 +138,12 @@ class EntryController extends Controller {
 
                 $em->persist($entry);
                 $flush = $em->flush();
+
+                $entry_repo->saveEntryTags($form->get("tags")->getData(),
+                    $form->get("title")->getData(),
+                    $form->get("category")->getData(),
+                    $user,
+                    $entry);
 
                 if ($flush == null) {
                     $message = "Entry was edited successfully";
@@ -137,7 +162,9 @@ class EntryController extends Controller {
         }
 
         return $this->render("BlogBundle:Entry:edit.html.twig", array(
-            "form" => $form->createView()
+            "form" => $form->createView(),
+            "entry" => $entry,
+            "tags" => $tags
         ));
     }
 }
