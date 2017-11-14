@@ -40,11 +40,14 @@ class EntryController extends Controller {
                 $entry->setStatus($form->get("status")->getData());
 
                 $file = $form->get("image")->getData();
-                $ext = $file->guessExtension();
-                $file_name = time() . "." . $ext;
-                $file->move("uploads", $file_name);
-
-                $entry->setImage($file_name);
+                if (!empty($file) && $file != null) {
+                    $ext = $file->guessExtension();
+                    $file_name = time() . "." . $ext;
+                    $file->move("uploads", $file_name);
+                    $entry->setImage($file_name);
+                }else{
+                    $entry->setImage(null);
+                }
 
                 $category = $category_repo->find($form->get("category")->getData());
                 $entry->setCategory($category);
@@ -84,14 +87,15 @@ class EntryController extends Controller {
         ));
     }
 
-    public function deleteAction($id) {
+    public
+    function deleteAction($id) {
         $em = $this->getDoctrine()->getManager();
         $entry_repo = $em->getRepository("BlogBundle:Entry");
         $entry_tag_repo = $em->getRepository("BlogBundle:EntryTag");
         $entry = $entry_repo->find($id);
-        $entry_tags = $entry_tag_repo->findBy(array("entry"=>$entry));
+        $entry_tags = $entry_tag_repo->findBy(array("entry" => $entry));
 
-        foreach ($entry_tags as $entry_tag){
+        foreach ($entry_tags as $entry_tag) {
             $em->remove($entry_tag);
             $em->flush();
         }
@@ -102,14 +106,16 @@ class EntryController extends Controller {
         return $this->redirectToRoute("blog_index_entry");
     }
 
-    public function editAction(Request $request, $id) {
+    public
+    function editAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $entry_repo = $em->getRepository("BlogBundle:Entry");
         $entry = $entry_repo->find($id);
+        $entry_image = $entry->getImage();
 
         $tags = "";
-        foreach ($entry->getEntryTag() as $entryTag){
-            $tags .= $entryTag->getTag()->getName().",";
+        foreach ($entry->getEntryTag() as $entryTag) {
+            $tags .= $entryTag->getTag()->getName() . ",";
         }
 
         $form = $this->createForm(EntryType::class, $entry);
@@ -124,11 +130,14 @@ class EntryController extends Controller {
                 $entry->setStatus($form->get("status")->getData());
 
                 $file = $form->get("image")->getData();
-                $ext = $file->guessExtension();
-                $file_name = time() . "." . $ext;
-                $file->move("uploads", $file_name);
-
-                $entry->setImage($file_name);
+                if (!empty($file) && $file != null) {
+                    $ext = $file->guessExtension();
+                    $file_name = time() . "." . $ext;
+                    $file->move("uploads", $file_name);
+                    $entry->setImage($file_name);
+                }else{
+                    $entry->setImage($entry_image);
+                }
 
                 $category = $category_repo->find($form->get("category")->getData());
                 $entry->setCategory($category);

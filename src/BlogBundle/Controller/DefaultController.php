@@ -3,6 +3,7 @@
 namespace BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class DefaultController extends Controller
 {
@@ -76,5 +77,9 @@ class DefaultController extends Controller
 
         return $this->render('BlogBundle:Default:index.html.twig',
             array("entries"=>$entries, "pageCount" => $pageCount, "page" => $page));
+    }
+
+    public function langAction(Request $request){
+        return $this->redirectToRoute("blog_homepage");
     }
 }

@@ -35,3 +35,7 @@ security:
 
             # https://symfony.com/doc/current/security/form_login_setup.html
             #form_login: ~
+    access_control:
+        - { path: ^/tags, roles: [ ROLE_ADMIN, ROLE_USER ] }
+        - { path: ^/categories, roles: ROLE_ADMIN }
+        - { path: ^/entries, roles: [ ROLE_ADMIN, ROLE_USER ] }

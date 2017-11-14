@@ -29,7 +29,7 @@
                     <td>{{ entry.content }}</td>
                     {% if app.user.id is defined and entry.user.id ==  app.user.id %}
                     <td>
-                        <a href="{{ path('blog_edit_entry', {"id":entry.id}) }}" class="btn btn-warning">Edit</a>
+                        <a href="{{ path('blog_edit_entry', {"id":entry.id}) }}" class="btn btn-warning">{% trans %} btn_edit {% endtrans %}</a>
                     </td>
                     <td>
                         <a href="{{ path('blog_delete_entry', {"id":entry.id}) }}" class="btn btn-danger">Delete</a>

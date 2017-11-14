@@ -56,6 +56,10 @@ blog_edit_entry:
     path: /entries/edit/{id}
     defaults: { _controller: BlogBundle:Entry:edit}
 
+blog_lang:
+    path:     /lang/{_locale}
+    defaults: { _controller: BlogBundle:Default:lang }
+
 blog_homepage:
     path:     /{page}
     defaults: { _controller: BlogBundle:Default:index, page:1 }
