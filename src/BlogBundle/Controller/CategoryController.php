@@ -71,7 +71,7 @@ class CategoryController extends Controller {
         return $this->redirectToRoute("blog_index_category");
     }
 
-    public function editAction(Request $request, $id){
+    public function editAction(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
         $category_repo = $em->getRepository("BlogBundle:Category");
         $category = $category_repo->find($id);
@@ -108,13 +108,33 @@ class CategoryController extends Controller {
         ));
     }
 
-    public function printCategoryAction(){
+    public function printCategoryAction() {
         $em = $this->getDoctrine()->getManager();
         $category_repo = $em->getRepository("BlogBundle:Category");
 
         $categories = $category_repo->findAll();
 
         return $this->render('@Blog/Category/menu.categories.html.twig',
-            array("categories"=>$categories));
+            array("categories" => $categories));
+    }
+
+    public function categoryAction($id, $page) {
+        $em = $this->getDoctrine()->getManager();
+        $category_repo = $em->getRepository("BlogBundle:Category");
+        $category = $category_repo->find($id);
+
+        $entry_repository = $em->getRepository("BlogBundle:Entry");
+        $entries = $entry_repository->getCategoryEntries($category, 5, $page);
+
+        if($page<1)
+            return $this->redirectToRoute("blog_homepage");
+        $pageSize = 5;
+        $totalItems = count($entries);
+        $pageCount = ceil($totalItems/$pageSize);
+        if($page>$pageCount)
+            return $this->redirectToRoute("blog_homepage");
+
+        return $this->render('@Blog/Category/category.html.twig',
+            array("category" => $category, "pageCount" => $pageCount, "entries" => $entries, "page" => $page));
     }
 }

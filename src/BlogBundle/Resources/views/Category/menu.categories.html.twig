@@ -1,3 +1,3 @@
 {% for category in categories %}
-    <li><a href="#">{{ category.name }}</a></li>
+    <li><a href="{{ path("blog_view_category", {"id":category.id}) }}">{{ category.name }}</a></li>
 {% endfor %}

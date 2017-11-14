@@ -3,7 +3,8 @@
 {% block content %}
     {% for entry in entries %}
         <div class="col-lg-12">
-            <p class="pull-left"><img width="100" style="margin-right:20px" src="{{ asset('uploads/'~entry.image) }}"/></p>
+            <p class="pull-left"><img width="100" style="margin-right:20px" src="{{ asset('uploads/'~entry.image) }}"/>
+            </p>
             <p><strong>{{ entry.title }}</strong></p>
             <p>Category: {{ entry.category.name }}</p>
             <p>Author: {{ entry.user.name }}</p>
@@ -16,4 +17,19 @@
         </div>
     {% endfor %}
     <div class="clearfix"></div>
+    <ul class="pagination">
+        {% if page > 1 %}
+            <li>
+                <a href="{{ path('blog_homepage', {"page":page-1}) }}">&laquo;</a>
+            </li>
+        {% endif %}
+        {% for i in 1..pageCount %}
+            <li><a href="{{ path('blog_homepage', {"page":i}) }}">{{ i }}</a></li>
+        {% endfor %}
+        {% if page < pageCount %}
+            <li>
+                <a href="{{ path('blog_homepage', {"page":page+1}) }}">&raquo;</a>
+            </li>
+        {% endif %}
+    </ul>
 {% endblock %}

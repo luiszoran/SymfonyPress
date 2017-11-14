@@ -61,13 +61,20 @@ class DefaultController extends Controller
         return $this->render('BlogBundle:Default:index.html.twig');
     }
 
-    public function indexAction(){
+    public function indexAction($page){
         $em = $this->getDoctrine()->getManager();
         $entry_repo = $em->getRepository("BlogBundle:Entry");
 
-        $entries = $entry_repo->findAll();
+        if($page<1)
+            return $this->redirectToRoute("blog_view_category");
+        $pageSize = 5;
+        $entries = $entry_repo->getPaginateEntries($pageSize, $page);
+        $totalItems = count($entries);
+        $pageCount = ceil($totalItems/$pageSize);
+        if($page>$pageCount)
+            return $this->redirectToRoute("blog_view_category");
 
         return $this->render('BlogBundle:Default:index.html.twig',
-            array("entries"=>$entries));
+            array("entries"=>$entries, "pageCount" => $pageCount, "page" => $page));
     }
 }
